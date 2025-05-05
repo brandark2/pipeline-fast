@@ -2,7 +2,9 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List
 
+
 app = FastAPI()
+
 
 class Item(BaseModel):
     id: int
@@ -10,11 +12,14 @@ class Item(BaseModel):
     price: float
     in_stock: bool
 
+
 items_db = []
+
 
 @app.get("/items", response_model=List[Item])
 def get_items():
     return items_db
+
 
 @app.get("/items/{item_id}", response_model=Item)
 def get_item(item_id: int):
@@ -23,10 +28,12 @@ def get_item(item_id: int):
             return item
     raise HTTPException(status_code=404, detail="Item not found")
 
+
 @app.post("/items", response_model=Item)
 def create_item(item: Item):
     items_db.append(item)
     return item
+
 
 @app.put("/items/{item_id}", response_model=Item)
 def update_item(item_id: int, updated_item: Item):
@@ -35,6 +42,7 @@ def update_item(item_id: int, updated_item: Item):
             items_db[i] = updated_item
             return updated_item
     raise HTTPException(status_code=404, detail="Item not found")
+
 
 @app.delete("/items/{item_id}")
 def delete_item(item_id: int):
