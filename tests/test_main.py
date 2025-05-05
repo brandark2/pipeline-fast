@@ -24,3 +24,6 @@ def test_delete_item():
     client.post("/items", json={"id": 4, "name": "Test4", "price": 7.0, "in_stock": False})
     response = client.delete("/items/4")
     assert response.status_code == 200
+    
+    response = client.get("/items/4")
+    assert response.status_code == 404
